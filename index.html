@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BulkIndexer Pro - Private Backlink Indexing Tool</title>
+<meta name="description" content="Index your backlinks fast with BulkIndexer Pro. Submit hundreds of URLs in bulk and get them indexed by Google within 24-96 hours.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --border: #2a2a3a;
+    --border2: #3a3a50;
+    --accent: #6c63ff;
+    --accent2: #a78bfa;
+    --green: #10b981;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --text: #f0f0f8;
+    --text2: #9898b0;
+    --text3: #6060780;
+    --card: #13131c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+  .nav-badge {
+    background: rgba(108, 99, 255, 0.15);
+    color: var(--accent2);
+    border: 1px solid rgba(108, 99, 255, 0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 4rem 2rem 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    color: var(--text2);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin: 0 auto 2rem;
+  }
+
+  /* STATS ROW */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* MAIN CONTAINER */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  /* API KEY SECTION */
+  .api-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text2);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-label::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .api-row {
+    display: flex;
+    gap: 10px;
+  }
+  .api-input {
+    flex: 1;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .api-input:focus { border-color: var(--accent); }
+  .api-input::placeholder { color: var(--text2); }
+
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn:hover { background: #7c73ff; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: rgba(108,99,255,0.08); }
+  .btn-green {
+    background: var(--green);
+  }
+  .btn-green:hover { background: #0da070; }
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  /* URL INPUT SECTION */
+  .url-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .url-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .url-textarea {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    resize: vertical;
+    min-height: 200px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .url-textarea:focus { border-color: var(--accent); }
+  .url-textarea::placeholder { color: var(--text2); }
+  .url-count {
+    font-size: 0.78rem;
+    color: var(--text2);
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .url-count span { color: var(--accent2); font-weight: 600; }
+
+  /* ACTION ROW */
+  .action-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .action-row .btn { flex: 1; min-width: 140px; }
+
+  /* PROGRESS */
+  .progress-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+  .progress-section.active { display: block; }
+  .progress-bar-wrap {
+    background: var(--bg3);
+    border-radius: 100px;
+    height: 8px;
+    margin: 1rem 0;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 100px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text2);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .progress-stats span { color: var(--text); }
+
+  /* RESULTS TABLE */
+  .results-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: none;
+  }
+  .results-section.active { display: block; }
+  .results-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .results-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .results-actions {
+    display: flex;
+    gap: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    text-align: left;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text2);
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 0.85rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(108, 99, 255, 0.04); }
+  .url-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text2);
+    max-width: 380px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .badge-success { background: rgba(16,185,129,0.12); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+  .badge-pending { background: rgba(245,158,11,0.12); color: var(--yellow); border: 1px solid rgba(245,158,11,0.2); }
+  .badge-error { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+  .badge-processing { background: rgba(108,99,255,0.12); color: var(--accent2); border: 1px solid rgba(108,99,255,0.2); }
+
+  /* SUMMARY CARDS */
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+  .summary-cards.active { display: grid; }
+  .s-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+  .s-num {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .s-label {
+    font-size: 0.72rem;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .s-num.green { color: var(--green); }
+  .s-num.yellow { color: var(--yellow); }
+  .s-num.red { color: var(--red); }
+  .s-num.purple { color: var(--accent2); }
+
+  /* ALERT */
+  .alert {
+    padding: 0.85rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: none;
+  }
+  .alert.show { display: block; }
+  .alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #fca5a5; }
+  .alert-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: #6ee7b7; }
+  .alert-info { background: rgba(108,99,255,0.1); border: 1px solid rgba(108,99,255,0.2); color: var(--accent2); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text2);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* AD PLACEHOLDER */
+  .ad-box {
+    background: var(--bg2);
+    border: 1px dashed var(--border2);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: var(--text2);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem; }
+    .hero { padding: 2rem 1rem 1rem; }
+    th:nth-child(3), td:nth-child(3) { display: none; }
+    .action-row .btn { flex: none; width: 100%; }
+  }
+
+  /* Spinner */
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    BulkIndexer Pro
+  </div>
+  <span class="nav-badge">Private Tool</span>
+</nav>
+
+<div class="hero">
+  <h1>Index Your Backlinks<br><span>Fast & Free</span></h1>
+  <p>Submit hundreds of URLs in bulk. Get them discovered by Google within 24–96 hours. No GSC access needed.</p>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">90%+</div><div class="stat-label">Success Rate</div></div>
+  <div class="stat"><div class="stat-num">500</div><div class="stat-label">URLs per Batch</div></div>
+  <div class="stat"><div class="stat-num">24hr</div><div class="stat-label">Avg Index Time</div></div>
+</div>
+
+<div class="container">
+
+  <!-- AD BOX TOP -->
+  <div class="ad-box">
+    📢 Advertisement Space — Google AdSense
+  </div>
+
+  <!-- ALERT -->
+  <div class="alert" id="alert"></div>
+
+  <!-- API KEY -->
+  <div class="api-section">
+    <div class="section-label">API Configuration</div>
+    <div class="api-row">
+      <input type="password" class="api-input" id="apiKey" placeholder="Paste your IndexPro API key here..." />
+      <button class="btn btn-outline btn-sm" onclick="toggleKey()">Show</button>
+      <button class="btn btn-outline btn-sm" onclick="saveKey()">Save</button>
+    </div>
+    <div style="margin-top:8px; font-size:0.75rem; color: var(--text2);">
+      🔒 Key is secured.
+    </div>
+  </div>
+
+  <!-- URL INPUT -->
+  <div class="url-section">
+    <div class="url-toolbar">
+      <div class="section-label" style="margin:0">URLs to Index</div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-outline btn-sm" onclick="loadSample()">Load Sample</button>
+        <button class="btn btn-outline btn-sm" onclick="clearUrls()">Clear</button>
+      </div>
+    </div>
+    <textarea class="url-textarea" id="urlInput" placeholder="Enter one URL per line:
+https://example.com/page1
+https://example.com/page2
+https://yourdomain.com/backlink
+..."></textarea>
+    <div class="url-count">URLs detected: <span id="urlCountDisplay">0</span> / 500 max</div>
+  </div>
+
+  <!-- ACTION ROW -->
+  <div class="action-row">
+    <button class="btn btn-green" id="submitBtn" onclick="submitUrls()">
+      ⚡ Submit & Index Now
+    </button>
+    <button class="btn btn-outline" onclick="exportResults()">
+      ↓ Export CSV
+    </button>
+    <button class="btn btn-outline" onclick="clearAll()">
+      ✕ Reset All
+    </button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-section" id="progressSection">
+    <div class="section-label">Submitting URLs</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-stats">
+      <div>Submitted: <span id="submittedCount">0</span></div>
+      <div>Success: <span id="successCount" style="color:var(--green)">0</span></div>
+      <div>Failed: <span id="failCount" style="color:var(--red)">0</span></div>
+      <div><span id="progressPct">0%</span></div>
+    </div>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-cards" id="summaryCards">
+    <div class="s-card"><div class="s-num purple" id="sTotalNum">0</div><div class="s-label">Total Submitted</div></div>
+    <div class="s-card"><div class="s-num green" id="sSuccessNum">0</div><div class="s-label">Indexed</div></div>
+    <div class="s-card"><div class="s-num yellow" id="sPendingNum">0</div><div class="s-label">Pending</div></div>
+    <div class="s-card"><div class="s-num red" id="sFailNum">0</div><div class="s-label">Failed</div></div>
+  </div>
+
+  <!-- RESULTS TABLE -->
+  <div class="results-section" id="resultsSection">
+    <div class="results-header">
+      <div class="results-title">Submission Results</div>
+      <div class="results-actions">
+        <button class="btn btn-outline btn-sm" onclick="filterResults('all')">All</button>
+        <button class="btn btn-outline btn-sm" onclick="filterResults('success')">Success</button>
+        <button class="btn btn-outline btn-sm" onclick="filterResults('pending')">Pending</button>
+        <button class="btn btn-outline btn-sm" onclick="filterResults('error')">Failed</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>URL</th>
+            <th>Status</th>
+            <th>Response</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- AD BOX BOTTOM -->
+  <div class="ad-box" style="margin-top:1.5rem;">
+    📢 Advertisement Space — Google AdSense
+  </div>
+
+</div>
+
+<footer>
+  BulkIndexer Pro &copy; 2026 — Private Backlink Indexing Tool &nbsp;|&nbsp; Privacy Policy &nbsp;|&nbsp; Contact
+</footer>
+
+<script>
+let allResults = [];
+let isRunning = false;
+
+// Load saved API key
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('indexpro_api_key') || 'bf241aaca23f46ebec3fc5fecd7d510ba5068fda9bf6ce6c66377ffe3f64617e';
+  document.getElementById('apiKey').value = saved;
+  updateUrlCount();
+});
+
+document.getElementById('urlInput').addEventListener('input', updateUrlCount);
+
+function updateUrlCount() {
+  const urls = getValidUrls();
+  document.getElementById('urlCountDisplay').textContent = urls.length;
+}
+
+function getValidUrls() {
+  const raw = document.getElementById('urlInput').value;
+  return raw.split('\n')
+    .map(u => u.trim())
+    .filter(u => u && u.startsWith('http'));
+}
+
+function toggleKey() {
+  const input = document.getElementById('apiKey');
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+function saveKey() {
+  const key = document.getElementById('apiKey').value.trim();
+  if (!key) return showAlert('Please enter an API key first.', 'error');
+  localStorage.setItem('indexpro_api_key', key);
+  showAlert('API key saved to browser!', 'success');
+}
+
+function loadSample() {
+  document.getElementById('urlInput').value =
+`https://example.com/blog/seo-tips
+https://example.com/page/backlinks
+https://yoursite.com/guest-post
+https://domain.com/directory/listing
+https://anothersite.com/profile/link`;
+  updateUrlCount();
+}
+
+function clearUrls() {
+  document.getElementById('urlInput').value = '';
+  updateUrlCount();
+}
+
+function clearAll() {
+  clearUrls();
+  allResults = [];
+  document.getElementById('progressSection').classList.remove('active');
+  document.getElementById('resultsSection').classList.remove('active');
+  document.getElementById('summaryCards').classList.remove('active');
+  document.getElementById('progressBar').style.width = '0%';
+  hideAlert();
+}
+
+function showAlert(msg, type) {
+  const el = document.getElementById('alert');
+  el.textContent = msg;
+  el.className = `alert alert-${type} show`;
+  setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+function hideAlert() {
+  document.getElementById('alert').classList.remove('show');
+}
+
+function statusBadge(status) {
+  if (status === 'success') return '<span class="badge badge-success">✓ Submitted</span>';
+  if (status === 'pending') return '<span class="badge badge-pending">⏳ Pending</span>';
+  if (status === 'processing') return '<span class="badge badge-processing">↻ Processing</span>';
+  return '<span class="badge badge-error">✕ Failed</span>';
+}
+
+async function submitUrls() {
+  if (isRunning) return;
+
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) return showAlert('⚠ Please enter your IndexPro API key first!', 'error');
+
+  const urls = getValidUrls();
+  if (urls.length === 0) return showAlert('⚠ Please enter at least one valid URL (must start with http).', 'error');
+  if (urls.length > 500) return showAlert('⚠ Maximum 500 URLs per batch allowed.', 'error');
+
+  isRunning = true;
+  allResults = [];
+  document.getElementById('progressSection').classList.add('active');
+  document.getElementById('resultsSection').classList.add('active');
+  document.getElementById('summaryCards').classList.add('active');
+  document.getElementById('resultsBody').innerHTML = '';
+
+  const btn = document.getElementById('submitBtn');
+  btn.innerHTML = '<span class="spinner"></span> Submitting...';
+  btn.disabled = true;
+
+  let submitted = 0, success = 0, failed = 0;
+  const startTime = Date.now();
+
+  // Show all URLs as processing
+  for (let i = 0; i < urls.length; i++) {
+    allResults.push({ url: urls[i], status: 'processing', responseMsg: 'Submitting...', elapsed: '-', index: i + 1 });
+    appendRow(allResults[allResults.length - 1]);
+  }
+
+  try {
+    const res = await fetch('https://gpot-server.vercel.app/indexing-batch/with/api/key', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': apiKey
+      },
+      body: JSON.stringify({
+        name: 'Bulk Batch - ' + new Date().toLocaleString(),
+        urls: urls,
+        dripfeed: 1
+      })
+    });
+
+    const data = await res.json().catch(() => ({}));
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
+
+    if (res.ok && data.success) {
+      success = urls.length;
+      submitted = urls.length;
+      const batchId = data.data?.batchId || 'N/A';
+      const credits = data.data?.remainingCredits ?? 'N/A';
+      allResults = allResults.map(r => ({ ...r, status: 'success', responseMsg: `Batch: ${batchId} | Credits: ${credits}`, elapsed }));
+    } else {
+      failed = urls.length;
+      submitted = urls.length;
+      const errMsg = data.message || data.error || `HTTP ${res.status}`;
+      allResults = allResults.map(r => ({ ...r, status: 'error', responseMsg: errMsg, elapsed }));
+    }
+  } catch (err) {
+    failed = urls.length;
+    submitted = urls.length;
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
+    allResults = allResults.map(r => ({ ...r, status: 'error', responseMsg: 'Network error — check API key', elapsed }));
+  }
+
+  // Re-render rows
+  document.getElementById('resultsBody').innerHTML = '';
+  allResults.forEach(r => appendRow(r));
+
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('progressPct').textContent = '100%';
+  document.getElementById('submittedCount').textContent = submitted;
+  document.getElementById('successCount').textContent = success;
+  document.getElementById('failCount').textContent = failed;
+  document.getElementById('sTotalNum').textContent = submitted;
+  document.getElementById('sSuccessNum').textContent = success;
+  document.getElementById('sPendingNum').textContent = 0;
+  document.getElementById('sFailNum').textContent = failed;
+
+  btn.innerHTML = '⚡ Submit & Index Now';
+  btn.disabled = false;
+  isRunning = false;
+
+  showAlert(`✓ Done! ${success} URLs submitted successfully, ${failed} failed.`, success > 0 ? 'success' : 'error');
+}
+
+function appendRow(r) {
+  const tbody = document.getElementById('resultsBody');
+  const tr = document.createElement('tr');
+  tr.dataset.status = r.status;
+  tr.innerHTML = `
+    <td style="color:var(--text2); font-family:monospace; font-size:0.8rem">${r.index}</td>
+    <td class="url-cell" title="${r.url}">${r.url}</td>
+    <td>${statusBadge(r.status)}</td>
+    <td style="font-size:0.78rem; color:var(--text2); font-family:monospace">${r.responseMsg}</td>
+    <td style="font-size:0.78rem; color:var(--text2); font-family:monospace">${r.elapsed}</td>
+  `;
+  tbody.appendChild(tr);
+  tr.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function filterResults(type) {
+  const rows = document.querySelectorAll('#resultsBody tr');
+  rows.forEach(row => {
+    row.style.display = (type === 'all' || row.dataset.status === type) ? '' : 'none';
+  });
+}
+
+function exportResults() {
+  if (!allResults.length) return showAlert('No results to export yet.', 'error');
+  const header = 'No,URL,Status,Response,Time\n';
+  const rows = allResults.map(r => `${r.index},"${r.url}","${r.status}","${r.responseMsg}","${r.elapsed}"`).join('\n');
+  const blob = new Blob([header + rows], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'indexing-results.csv';
+  a.click();
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+</script>
+</body>
+</html>
